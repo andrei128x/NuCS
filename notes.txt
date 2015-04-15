@@ -1,0 +1,17 @@
+
+
+
+
+cerinte de baza
+
+	-	github
+	-	API REST - 1 pct bonus
+	-	HTML5 valid / Ajax
+	-	SQL pentru SGBD
+	-	programmer manual, APIs etc
+	-	templates/config
+	-	Cross Site Script/SQL injection
+	
+	bonus
+	
+	-oop
