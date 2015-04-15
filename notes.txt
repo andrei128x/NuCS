@@ -1,8 +1,5 @@
 
-
-
-
-cerinte de baza
+1.	Cerinte de baza (sinteza) :
 
 	-	github
 	-	API REST - 1 pct bonus
@@ -15,3 +12,11 @@ cerinte de baza
 	bonus
 	
 	-oop
+	
+	
+2.	Arhitectura
+	-	baza de date Oracle, accesata prin functii/procedure disponibile intr-un pachet
+	-	aplicatie server-side, JAVA, ce are ca scop achizitionarea datelor de pe site-urile de stiri, parsarea acestora, introducerea in baza de date, si livrarea catre client prin API-uri REST
+	
+	-	aplicatia WEB client, sub forma de cod HTML5 + Ajax( jQuery framework )
+	
