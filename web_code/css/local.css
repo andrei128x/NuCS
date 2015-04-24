@@ -1,0 +1,22 @@
+.memo	{
+	padding	:	8px 0px 0px 0px;
+	margin	:	initial;	
+}
+
+td1{
+	border:	0px none !important;
+}
+
+p .memo	{
+	margin		:	4px 6px 4px !important;
+}
+
+th		{
+	border-bottom-width:	1px !important;
+}
+
+.text	{
+	box-shadow			:	none;
+	border				:	none;
+	background-color	:	transparent !important;
+}
