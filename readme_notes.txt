@@ -20,3 +20,20 @@
 	
 	-	aplicatia WEB client, sub forma de cod HTML5 + Ajax( jQuery framework )
 	
+3. task activity
+
+	- front-end:
+		- instalare si configurare template-ului BootStrap
+		- crearea interfetei HTML + Knockout.js
+		- creare aplicatie JavaScript pentru testare functionalitati ( responsive interface + Data Binging )
+		
+		resurse alocate: cca. 80 ore
+		
+	- back end
+		- crearea aplicatiei stand-alone (Java) pentru parsarea RSS-urilor ( Reddit, TheHackerNews, InfoQ )
+		
+		
+		resurse alocate cca. 20 ore
+		
+		
+		
