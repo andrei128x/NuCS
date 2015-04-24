@@ -1,5 +1,5 @@
 
-*** NOTE : this is only a tracker file; for the project Architecture and requirements, visit the WIKI page ***
+*** NOTE : this is only a tracker file; for the project Architecture and Requirements, visit the WIKI page ***
 *** WIKI : https://github.com/andrei128x/NuCS/wiki                                                         ***
 
 
