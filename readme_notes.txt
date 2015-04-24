@@ -1,4 +1,8 @@
 
+*** NOTE : this is only a tracker file; for the project Architecture and requirements, visit the WIKI page ***
+*** WIKI : https://github.com/andrei128x/NuCS/wiki                                                         ***
+
+
 1.	Cerinte de baza (sinteza) :
 
 	-	github
