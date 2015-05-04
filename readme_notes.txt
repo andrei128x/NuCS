@@ -31,13 +31,16 @@
 		- crearea interfetei HTML + Knockout.js
 		- creare aplicatie JavaScript pentru testare functionalitati ( responsive interface + Data Binging )
 		
-		resurse alocate: cca. 80 ore
+		Spent resources: cca. 80 ore
 		
 	- back end
 		- crearea aplicatiei stand-alone (Java) pentru parsarea RSS-urilor ( Reddit, TheHackerNews, InfoQ )
 		
 		
-		resurse alocate cca. 20 ore
-		
+	
+		Spent resources ( approx.):
+		-	20 hours - RSS Collector
+		-	10 hours - tomcat + demo servlet + first DB connection from servlet
+		-	8 hours	- Oracle SQL + RSS Collector code : INSERT capability + nucs_articles tables
 		
 		
