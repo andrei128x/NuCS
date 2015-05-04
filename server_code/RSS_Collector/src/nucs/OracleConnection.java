@@ -8,17 +8,18 @@ import java.sql.Statement;
 
 public class OracleConnection {
 
+	private Connection connection = null;
+
 	public OracleConnection()
 	{
 		try {
-			Class.forName("oracle.jdbc.driver.OracleDriver");
+			Class.forName("oracle.jdbc.OracleDriver");
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
 		
-		Connection connection = null;
 		
 		try {
 			 
@@ -40,24 +41,29 @@ public class OracleConnection {
 			System.out.println("Failed to make connection!");
 		}
 		
+		
+	}
+	
+	public void addRssDataIntoOracleDB(ItemElement article)
+	{
+
 		try {
 			Statement stmt = connection.createStatement();
-		    ResultSet rs = stmt.executeQuery( "select * from emp" );
-		    
-		    while(rs.next())
-		    {
-		    	int numColumns = rs.getMetaData().getColumnCount();
-	            for ( int i = 1 ; i <= numColumns ; i++ )
-	            {
-	            	System.out.println(rs.getString(i));
-	            }
-		    }
+		    stmt.execute( article.toSQL() );
+//		    
+//		    while(rs.next())
+//		    {
+//		    	int numColumns = rs.getMetaData().getColumnCount();
+//	            for ( int i = 1 ; i <= numColumns ; i++ )
+//	            {
+//	            	System.out.println(rs.getString(i));
+//	            }
+//		    }
 		    
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			System.out.println("SQL Exception raised !");
 			e.printStackTrace();
 		}
-		
 	}
 
 }

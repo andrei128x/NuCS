@@ -16,5 +16,12 @@ public class ItemElement {
 	{
 		return title + " | " + link + " | " + author + " | " + pubDate + " | " + description + " | " + " | ";
 	}
+	
+	public String toSQL()
+	{
+		String ret = "begin \n add_rss_data('" + title + "', '" + link + "', " + "10" + ", '" + author + "', " + "sysdate" + ", '"  + "'); \n end;";
+		System.out.println(ret);
+		return ret;
+	}
 
 }

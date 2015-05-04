@@ -1,7 +1,13 @@
 package nucs;
 
+import java.io.DataInputStream;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -15,6 +21,31 @@ public class ParserRSS extends DefaultHandler {
 	
 	private boolean insideItem		=	false;	// retains whether we are inside an RSS item or not
 	private String	currentProperty	=	null;	// retains the current field from the RSS item, used for parsing
+	
+	/**
+	 * Retrieve the RSS content of a 
+	 * @param path
+	 */
+	public void getRssData(String path)
+	{
+		SAXParserFactory factory = SAXParserFactory.newInstance();
+        try {
+        	URL url = new URL(path);
+
+        	URLConnection hc	=	url.openConnection();
+        	
+        	hc.setRequestProperty("User-Agent", "My UberCool App v.0.1");
+
+        	DataInputStream data = new DataInputStream(hc.getInputStream());
+			
+            SAXParser      saxParser = factory.newSAXParser();
+            //handler   = new ParserRSS();
+            saxParser.parse(data, this);
+
+        } catch (Throwable err) {
+            err.printStackTrace ();
+        }
+	}
 	
 	/**
 	 * Append the current field from the RSS item to the ItemElement
@@ -44,7 +75,7 @@ public class ParserRSS extends DefaultHandler {
 	
 	
 	/**
-	 * Function callback called when start of element is detected
+	 * Function callback called when start of XML element is detected
 	 */
 	public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException
     {
@@ -61,7 +92,7 @@ public class ParserRSS extends DefaultHandler {
 	
 	
 	/**
-	 * Function callback called when end of element is detected
+	 * Function callback called when end of XML element is detected
 	 */
 	public void endElement(String uri, String localName, String qName) throws SAXException
 	{
@@ -74,7 +105,7 @@ public class ParserRSS extends DefaultHandler {
 	
 	
 	/**
-	 * Function callback called when element data is parsed
+	 * Function callback called when XML element data is parsed
 	 */
 	public void characters(char ch[], int start, int length) throws SAXException
 	{
