@@ -43,4 +43,4 @@
 		-	10 hours - tomcat + demo servlet + first DB connection from servlet
 		-	8 hours	- Oracle SQL + RSS Collector code : INSERT capability + nucs_articles tables
 		
-		
+		-	6 hours - troubleshooting Tomcat+Oracle connection on the local laptop, after email response.
