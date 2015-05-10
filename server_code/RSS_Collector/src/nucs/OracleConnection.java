@@ -24,7 +24,7 @@ public class OracleConnection {
 		try {
 			 
 			connection = DriverManager.getConnection(
-					"jdbc:oracle:thin:@localhost:1521:orcl", "system",
+					"jdbc:oracle:thin:@localhost:1522:orcl", "system",
 					"test");
  
 		} catch (SQLException e) {

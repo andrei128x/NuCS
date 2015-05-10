@@ -1,10 +1,8 @@
-
-
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Enumeration;
 
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -12,7 +10,6 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Servlet implementation class MainApp
  */
-@WebServlet(description = "Some nice description here", urlPatterns = { "/MainApp" })
 
 public class MainApp extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -27,6 +24,7 @@ public class MainApp extends HttpServlet {
 		response.setContentType("text/html");
         PrintWriter writer = response.getWriter();
         
+        Enumeration<String> e = request.getHeaderNames();
         
         writer.println("<html>");
         writer.println("<head>");
@@ -35,16 +33,29 @@ public class MainApp extends HttpServlet {
         
         
         writer.println("<body bgcolor=white>");
+        writer.println("<br>[response]<br>");
+        
+        writer.println("Method: " + request.getMethod() + "<br>");
+        writer.println("Request URI: " + request.getRequestURI() + "<br>");
+        writer.println("Protocol: " + request.getProtocol() + "<br>");
+        writer.println("PathInfo: " + request.getPathInfo() + "<br>");
+        writer.println("Remote Address: " + request.getRemoteAddr() + "<br>");
+        
+        writer.println("[new data]");
         
         writer.println("<table>");
+        
         
         conn.getContent(writer);
                 
         writer.println("</table>");
         
+        writer.println("[end new data]");
+        
         writer.println("</body>");
         writer.println("</html>");
         
+        conn.closeConnection();
 	}
 
 	/**
