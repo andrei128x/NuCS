@@ -3,12 +3,13 @@
 	margin	:	initial;	
 }
 
-td1{
-	border:	0px none !important;
+td{
+	border:		0px none !important;
+	padding:	0 !important;
 }
 
 p .memo	{
-	margin		:	4px 6px 4px !important;
+	margin:		4px 6px 4px !important;
 }
 
 th		{
@@ -19,4 +20,23 @@ th		{
 	box-shadow			:	none;
 	border				:	none;
 	background-color	:	transparent !important;
+}
+
+.panel {
+	margin-bottom:	2px;
+	border-radius:	0px;
+}
+
+.panel-heading {
+	border-radius:	0px;
+	background-image:	none !important;
+	background-color:	#d9534f !important;
+	color:			#fff !important;
+}
+
+.panel-body {
+	font-size:	small;
+	padding:	2px;
+	padding-left:	8px;
+	padding-right:	8px;
 }
