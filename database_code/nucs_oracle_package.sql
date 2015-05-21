@@ -20,7 +20,7 @@ create or replace procedure add_rss_data(
 		v_text	in	nucs_articles.text%type
 	) is
 
-	v_next_index nucs_articles.id%type	:=	0;
+	v_next_index nucs_articles.id%type	:=	1;
 
 	cursor c_idx is select id into v_next_index from nucs_articles where rownum = 1 order by id desc;
 
@@ -40,6 +40,22 @@ begin
 			v_text
 		);
 	
+  commit;
 	
+end;
+/
+
+create or replace function get_index return nucs_articles.id%type
+  is
+    v_next_index nucs_articles.id%type	:=	1;
+    cursor c_idx is select id into v_next_index from nucs_articles where rownum = 1 order by id desc;
+begin
+
+  for c_rec in c_idx loop
+		v_next_index := c_rec.id;
+	end loop;
+  
+  return v_next_index;
+  
 end;
 /

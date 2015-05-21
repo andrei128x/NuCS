@@ -1,3 +1,4 @@
+package nucsApp;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Enumeration;
@@ -11,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
  * Servlet implementation class MainApp
  */
 
-public class MainApp extends HttpServlet {
+public class AddData extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**

@@ -32,6 +32,7 @@ public class Main {
 			dbConnection.addRssDataIntoOracleDB( rssDataCollector.items.get(k) );
 		}
 		
+		dbConnection.closeConnection();
 	}
 
 }

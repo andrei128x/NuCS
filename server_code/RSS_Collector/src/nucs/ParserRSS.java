@@ -12,6 +12,7 @@ import javax.xml.parsers.SAXParserFactory;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
+import org.apache.commons.lang3.StringEscapeUtils;
 
 public class ParserRSS extends DefaultHandler {
 
@@ -61,15 +62,15 @@ public class ParserRSS extends DefaultHandler {
 		/* Populate the ItemElement object with the corresponding information */
 		switch(currentProperty)
 		{
-		case("title"):			currentItem.title				+=	data;break;
-		case("link"):			currentItem.link				+=	data;break;
+		case("title"):			currentItem.title				+=	StringEscapeUtils.escapeXml11(data);break;
+		case("link"):			currentItem.link				+=	StringEscapeUtils.escapeXml11(data);break;
 		case("category"):		currentItem.category.add(data);break;
 		
 		case("author"):
-		case("dc:creator"):		currentItem.author			+=	data;break;
+		case("dc:creator"):		currentItem.author			+=	StringEscapeUtils.escapeXml11(data);break;
 		
-		case("pubDate"):		currentItem.pubDate			+=	data;break;
-		case("description"):	currentItem.description	+=	data;break;
+		case("pubDate"):		currentItem.pubDate			+=	StringEscapeUtils.escapeXml11(data);break;
+		case("description"):	currentItem.description		+=	StringEscapeUtils.escapeXml11(data);break;
 		}
 	}
 	
