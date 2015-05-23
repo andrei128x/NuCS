@@ -64,7 +64,17 @@ public class ParserRSS extends DefaultHandler {
 		{
 		case("title"):			currentItem.title				+=	StringEscapeUtils.escapeXml11(data);break;
 		case("link"):			currentItem.link				+=	StringEscapeUtils.escapeXml11(data);break;
-		case("category"):		currentItem.category.add(data);break;
+		
+		case("category"):
+			
+			String str_lst = StringEscapeUtils.escapeXml11(data);
+				if(data!="")
+				{
+					currentItem.category[currentItem.cat_count]	= str_lst;
+					currentItem.cat_count++;
+					//System.out.println(str_lst);
+				}
+				break;
 		
 		case("author"):
 		case("dc:creator"):		currentItem.author			+=	StringEscapeUtils.escapeXml11(data);break;

@@ -5,9 +5,11 @@ import java.util.List;
 
 public class ItemElement {
 
+	public int cat_count	=	0;
+	
 	public String		title		=	"";
 	public String		link		=	"";
-	public List<String>	category	=	new ArrayList<String>();
+	public String[]		category = new String[50];
 	public String		author		=	"";
 	public String		pubDate		=	"";
 	public String		description	=	"";

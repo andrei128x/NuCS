@@ -74,10 +74,10 @@
                     			
 						<div class="panel panel-default">
 							<div class="panel-heading">
-								<h3 class="panel-title">Panel title</h3>
+								<h3 class="panel-title" data-bind="text: id">Panel title</h3>
 							</div>
 							<div class="panel-body">
-								<p>Etiam porta <em>sem malesuada magna</em> mollis euismod; Etiam porta <em>sem malesuada magna</em> mollis euismod; Etiam porta <em>sem malesuada magna</em> mollis euismod</p>
+								<p  data-bind="text: title">Etiam porta <em>sem malesuada magna</em> mollis euismod; Etiam porta <em>sem malesuada magna</em> mollis euismod; Etiam porta</p>
 							</div>
 						</div>
 						
@@ -87,7 +87,7 @@
                 </tbody>
               </table>
             
-            <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
+            <p><a class="btn btn-default" href="#" role="button" data-bind="click: reload">View details &raquo;</a></p>
 
           </div>
 		

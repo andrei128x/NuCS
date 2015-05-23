@@ -20,14 +20,14 @@
   </servlet>
   <servlet-mapping>
     <servlet-name>serv1</servlet-name>
-    <url-pattern>/display*</url-pattern>
+    <url-pattern>/display</url-pattern>
   </servlet-mapping>
   <servlet>
   	<servlet-name>serv2</servlet-name>
-  	<servlet-class>nucsApp.GetData</servlet-class>
+  	<servlet-class>nucsApp.GetArticles</servlet-class>
   </servlet>
   <servlet-mapping>
   	<servlet-name>serv2</servlet-name>
-  	<url-pattern>/helper</url-pattern>
+  	<url-pattern>/articles</url-pattern>
   </servlet-mapping>
 </web-app>

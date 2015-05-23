@@ -8,22 +8,20 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class GetData extends HttpServlet {
+public class GetArticles extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
-		response.setContentType("text/html");
+		OracleConnection conn = new OracleConnection();
+		
+		response.setContentType("application/json");
         PrintWriter writer = response.getWriter();
         
-        writer.println("<html>");
-        writer.println("<head>");
-        writer.println("<title>GetData handler class</title>");
-        writer.println("</head>");
+        writer.println("{\n");
+        conn.getArticles(writer);
+        writer.println("\n}");
         
-        
-        writer.println("<body bgcolor=white>Yehaaaaw ");
-        writer.println("</body");
-        writer.println("</html>");
+        conn.closeConnection();
 	}
 	
 }

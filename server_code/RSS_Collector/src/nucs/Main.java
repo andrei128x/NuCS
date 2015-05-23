@@ -29,7 +29,7 @@ public class Main {
 		for( int k=0; k< rssDataCollector.items.size(); k++ )
 		{
 			//System.out.println(rssDataCollector.items.get(k).toString());
-			dbConnection.addRssDataIntoOracleDB( rssDataCollector.items.get(k) );
+			dbConnection.addRssArticle( rssDataCollector.items.get(k) );
 		}
 		
 		dbConnection.closeConnection();

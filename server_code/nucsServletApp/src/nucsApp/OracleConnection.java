@@ -102,6 +102,47 @@ public class OracleConnection {
 		}
 	}
 	
+	
+	public void getArticles(PrintWriter target)
+	{
+		if (connection != null) {
+			System.out.println("You made it, take control your database now!");
+			jdbcResponse	=	"You made it, take control your database now!";
+		} else {
+			System.out.println("Failed to make connection!");
+			jdbcResponse	=	"Failed to make connection!";
+		}
+		
+		try {
+			Statement stmt = connection.createStatement();
+		    ResultSet rs = stmt.executeQuery( "select * from nucs_articles" );
+		    
+		    while(rs.next())
+		    {
+		    	target.print("{ ");
+		    	
+		    	int numColumns = rs.getMetaData().getColumnCount();
+	            
+//		    	for ( int i = 1 ; i <= numColumns ; i++ )
+//	            {
+//	            	System.out.print(rs.getString(i) + "\t");
+//	            	target.print("<td>" + rs.getString(i) + "</td>");
+//	            }
+	            
+		    	target.print(" \"id\":\"" + rs.getString(1) + "\",");
+		    	target.print(" \"title\":\" " + rs.getString(2) + " \"" );
+		    	target.print("link\":\" " + rs.getString(3) + " \" ");
+		    	
+	            System.out.println();
+	            target.println(" },\n");
+		    }
+		    
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
 	public void closeConnection()
 	{
 		try {

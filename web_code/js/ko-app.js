@@ -10,6 +10,7 @@ var someLine = function(textStr, itemNumber)
 	
 	this.showEditBtns	=	ko.observable(false);
 	this.showDelBtn		=	ko.observable(true);
+	
 }
 	
 // LIST: contains indexes of the lines that have been edited in current session
@@ -151,6 +152,18 @@ var viewModelInstance = viewModel([
 		new someLine('ala bala portocala 2', 2),
 		new someLine('element 1', 1)
 	]);
+	
+//data = getDataUsingAjax();
+
+$.ajax({
+  dataType: "json",
+  url: "http://localhost:8080/nucsapi/articles",
+  data: data,
+  success: success
+});
+
+viewModelInstance = ko.mapping.fromJS(data, viewModel)
+console.log(viewModelInstance);
 
 // apply the global bindings
 ko.applyBindings( viewModelInstance );
