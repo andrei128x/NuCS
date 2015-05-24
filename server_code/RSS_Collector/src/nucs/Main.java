@@ -22,8 +22,8 @@ public class Main {
 	 */
 	public static void main(String[] args)
 	{
-		rssDataCollector.getRssData("http://feeds.feedburner.com/TheHackersNews?format=xml");
 		rssDataCollector.getRssData("http://www.infoq.com/feed");
+		rssDataCollector.getRssData("http://feeds.feedburner.com/TheHackersNews?format=xml");
 		rssDataCollector.getRssData("http://www.reddit.com/r/technology/.rss");
 		
 		for( int k=0; k< rssDataCollector.items.size(); k++ )

@@ -1,12 +1,11 @@
-var someLine = function(textStr, itemNumber)
+var lineData = function(id, title, link, text)
 {
-	this.textStr		=	ko.observable(textStr);
-	this.defaultText	=	textStr;							// default text to display upon Cancel
+	this.art_id 	=	ko.observable(id);		// article ID; does NOT reflect order on screen
+	this.art_title 	=	ko.observable(title);		// article ID; does NOT reflect order on screen
+	this.art_link 	=	ko.observable(link);		// article ID; does NOT reflect order on screen
+	this.art_text 	=	ko.observable(text);		// article ID; does NOT reflect order on screen
 	
-	this.itemNumber 	=	ko.observable(itemNumber);		// article ID; does NOT reflect order on screen
 	this.orderIndex		=	0;									// order in the display list; will be set up at the re-indexing function
-	
-	this.isEditable		=	ko.observable(false);
 	
 	this.showEditBtns	=	ko.observable(false);
 	this.showDelBtn		=	ko.observable(true);
@@ -15,11 +14,13 @@ var someLine = function(textStr, itemNumber)
 	
 // LIST: contains indexes of the lines that have been edited in current session
 var	changedLinesList	=	[]
-	
+
+self = null;
+
 var viewModel = function(lines)
 {
 	// save the current instance reference of the ViewModel; "this" is local-consistent, not global-consistent
-	var self = this;
+	self = this;
 
 	// index of the last object added; start at "1"
 	self.index		= lines.length + 1;
@@ -44,8 +45,8 @@ var viewModel = function(lines)
 	{
 		console.log( this.orderIndex );
 		
-		// self.lines.push( new someLine('super cool shit abcd urs polar ', self.index) );			//push at the end
-		self.lines.splice( this.orderIndex, 0, new someLine('super cool shit abcd urs polar ', self.index ) );	//push at the top
+		// self.lines.push( new lineData('super cool shit abcd urs polar ', self.index) );			//push at the end
+		self.lines.splice( this.orderIndex, 0, new lineData('super cool shit abcd urs polar ', self.index ) );	//push at the top
 		
 		// re-index the display order
 		//for( tmp_index = 0; tmp_index < lines.length; tmp_index++ ){ lines[tmp_index].orderIndex	=	tmp_index; }
@@ -146,24 +147,47 @@ var viewModel = function(lines)
 	// end View Model
 }
 
-// create instance of the viewModel; elements get added in reverse order
-var viewModelInstance = viewModel([
-		new someLine('hei rup hei rap 3', 3),
-		new someLine('ala bala portocala 2', 2),
-		new someLine('element 1', 1)
-	]);
-	
 //data = getDataUsingAjax();
 
 $.ajax({
-  dataType: "json",
-  url: "http://localhost:8080/nucsapi/articles",
-  data: data,
-  success: success
+type: 'GET',
+dataType: "json",
+// dataType: 'text',
+url: "http://localhost:8080/nucsApp/articles",
+success: function(data){
+	
+	console.log(self.lines + "huh");
+	
+	self.lines.removeAll();
+	
+	for( article in data.articles )
+	{
+		self.lines.push(
+			new lineData(
+				data.articles[article].id,
+				data.articles[article].title,
+				data.articles[article].link,
+				data.articles[article].text
+				)
+			);	
+			
+	}
+	
+	//ko.applyBindings( xx );
+	}
 });
 
-viewModelInstance = ko.mapping.fromJS(data, viewModel)
-console.log(viewModelInstance);
+
+	// $.getJSON("http://localhost:8080/nucsApp/articles", function (data) {
+		// console.log("kek");
+	// });
+
+
+//viewModelInstance = ko.mapping.fromJS(data, viewModel)
+// console.log(data);
+
+// create instance of the viewModel; elements get added in reverse order
+viewModelInstance = viewModel([]);
 
 // apply the global bindings
 ko.applyBindings( viewModelInstance );
@@ -178,6 +202,7 @@ $.ajaxSetup({
     beforeSend: function(xhr, settings) {
         if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
             xhr.setRequestHeader("X-CSRFToken", csrftoken);
+			xhr.setRequestHeader("Origin", "localhost");
         }
     }
 });

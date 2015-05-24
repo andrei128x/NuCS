@@ -15,11 +15,12 @@ public class GetArticles extends HttpServlet {
 		OracleConnection conn = new OracleConnection();
 		
 		response.setContentType("application/json");
+		response.setHeader("Access-Control-Allow-Origin", "null");
         PrintWriter writer = response.getWriter();
         
-        writer.println("{\n");
+        writer.println("{\n \"articles\": [");
         conn.getArticles(writer);
-        writer.println("\n}");
+        writer.println("\n ]\n}");
         
         conn.closeConnection();
 	}

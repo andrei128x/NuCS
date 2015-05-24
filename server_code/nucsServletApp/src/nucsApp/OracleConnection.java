@@ -115,11 +115,20 @@ public class OracleConnection {
 		
 		try {
 			Statement stmt = connection.createStatement();
-		    ResultSet rs = stmt.executeQuery( "select * from nucs_articles" );
+		    ResultSet rs = stmt.executeQuery( "select * from nucs_articles where rownum<=5" );
+		    boolean firstRow = true;
 		    
 		    while(rs.next())
 		    {
-		    	target.print("{ ");
+		    	/* starting with SECOND RAW, start adding comma separator after previous raw */
+		    	if(!firstRow)
+		    	{
+		    		target.println(",");
+		    	}
+		    	
+		    	firstRow = false;
+		    	
+		    	target.print("	{ ");
 		    	
 		    	int numColumns = rs.getMetaData().getColumnCount();
 	            
@@ -129,12 +138,14 @@ public class OracleConnection {
 //	            	target.print("<td>" + rs.getString(i) + "</td>");
 //	            }
 	            
-		    	target.print(" \"id\":\"" + rs.getString(1) + "\",");
-		    	target.print(" \"title\":\" " + rs.getString(2) + " \"" );
-		    	target.print("link\":\" " + rs.getString(3) + " \" ");
+		    	target.println();
+		    	target.println("\t \"id\":\"" + rs.getString("art_id")		+ "\",");
+		    	target.println("\t \"title\":\"" + rs.getString("title")	+ "\"," );
+		    	target.println("\t \"link\":\"" + rs.getString("link")		+ "\",");
+		    	target.println("\t \"text\":\"" + rs.getString("text")		+ "\"");
 		    	
 	            System.out.println();
-	            target.println(" },\n");
+	            target.print("\t}");
 		    }
 		    
 		} catch (SQLException e) {

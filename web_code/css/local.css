@@ -22,16 +22,17 @@ th		{
 	background-color	:	transparent !important;
 }
 
-.panel {
-	margin-bottom:	2px;
-	border-radius:	0px;
+
+.container {
+	font-family: Verdana, Arial, sans;
 }
 
 .panel-heading {
-	border-radius:	0px;
+	//border-radius:	0px;
 	background-image:	none !important;
 	background-color:	#d9534f !important;
 	color:			#fff !important;
+	font-size:	medium;
 }
 
 .panel-body {
