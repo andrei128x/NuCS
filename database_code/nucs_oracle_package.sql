@@ -46,13 +46,23 @@ end;
 create or replace type nucs_categ_list_type as table of varchar2(128);
 /
 
-create or replace procedure nucs_sync_categories( v_cat_list in nucs_categ_list_type )
+create or replace procedure nucs_sync_categories(
+    v_art_id in nucs_articles.art_id%type,
+    v_cat_list in nucs_categ_list_type
+  )
   as
+  v_next_cat_index  nucs_cat_list.cat_id%type;
 begin
 	for k in 1..v_cat_list.count loop
 		dbms_output.put_line(v_cat_list(k));
+    
 		if(v_cat_list(k) is not null) then
-      insert into nucs_categories values(nucs_get_index, v_cat_list(k));
+    
+      v_next_cat_index := nucs_get_index;
+    
+      insert into nucs_categories values(v_next_cat_index, v_cat_list(k));
+      insert into nucs_cat_list values(v_art_id, v_next_cat_index);
+    
     end if;  
 		
 	end loop;
@@ -68,16 +78,16 @@ create or replace procedure add_rss_data(
 		v_text	in	nucs_articles.text%type
 	) is
 
-	v_next_index number;
+	v_next_art_index number;
 
 begin
 
-	v_next_index := nucs_get_index;
+	v_next_art_index := nucs_get_index;
 	
-	nucs_sync_categories(v_cat_list);
+	nucs_sync_categories(v_next_art_index, v_cat_list);
 	
 	insert into nucs_articles values(
-			v_next_index,
+			v_next_art_index,
 			v_title,
 			v_link,
 			10,

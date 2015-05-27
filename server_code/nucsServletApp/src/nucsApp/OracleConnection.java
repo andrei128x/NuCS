@@ -17,16 +17,10 @@ public class OracleConnection {
 	private	Connection connection = null;
 	
 	public	String	jdbcResponse	=	null;
+	public	String	firstPageID		=	null;
 	
 	public OracleConnection()
 	{
-//		try {
-//			Class.forName("oracle.jdbc.OracleDriver");
-//		} catch (ClassNotFoundException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		
 		
 		Context initContext = null;
 		try {
@@ -103,56 +97,67 @@ public class OracleConnection {
 	}
 	
 	
-	public void getArticles(PrintWriter target)
+	public void getArticles(PrintWriter target, int start, int page) throws SQLException
 	{
-		if (connection != null) {
+		if (connection != null)
+		{
 			System.out.println("You made it, take control your database now!");
-			jdbcResponse	=	"You made it, take control your database now!";
-		} else {
-			System.out.println("Failed to make connection!");
-			jdbcResponse	=	"Failed to make connection!";
-		}
-		
-		try {
-			Statement stmt = connection.createStatement();
-		    ResultSet rs = stmt.executeQuery( "select * from nucs_articles where rownum<=5" );
-		    boolean firstRow = true;
+			jdbcResponse		=	"You made it, take control your database now!";
+			
+			String		tmpID		= null;
+			boolean		firstRow	= true;
+			Statement	stmt		= connection.createStatement();
+
+			/* SQL query here */
+			ResultSet rs = stmt.executeQuery(
+					"select * from nucs_articles where"
+					+ " rownum <= " + String.valueOf(page)
+					+ " and art_id <= " + start
+					+ " order by art_id desc"
+				);
 		    
 		    while(rs.next())
 		    {
 		    	/* starting with SECOND RAW, start adding comma separator after previous raw */
 		    	if(!firstRow)
 		    	{
-		    		target.println(",");
+		    		target.println(",\n");
+		    	}else{
+		    		firstRow = false;
 		    	}
 		    	
-		    	firstRow = false;
+		    	target.print("	{\n");
 		    	
-		    	target.print("	{ ");
+		    	tmpID	=	getColumnAsJSON(rs, "art_id");
 		    	
-		    	int numColumns = rs.getMetaData().getColumnCount();
-	            
-//		    	for ( int i = 1 ; i <= numColumns ; i++ )
-//	            {
-//	            	System.out.print(rs.getString(i) + "\t");
-//	            	target.print("<td>" + rs.getString(i) + "</td>");
-//	            }
-	            
-		    	target.println();
-		    	target.println("\t \"id\":\"" + rs.getString("art_id")		+ "\",");
-		    	target.println("\t \"title\":\"" + rs.getString("title")	+ "\"," );
-		    	target.println("\t \"link\":\"" + rs.getString("link")		+ "\",");
-		    	target.println("\t \"text\":\"" + rs.getString("text")		+ "\"");
+		    	if(firstPageID == null){
+		    		firstPageID	=	tmpID;
+		    	}
 		    	
-	            System.out.println();
+		    	//int numColumns = rs.getMetaData().getColumnCount();
+		    	target.println(	tmpID + ",");
+		    	target.println(getColumnAsJSON(rs, "title")	+ ",");
+		    	target.println(getColumnAsJSON(rs, "link")	+ ",");
+		    	target.println(getColumnAsJSON(rs, "text") );
+		    	
 	            target.print("\t}");
-		    }
-		    
-		} catch (SQLException e) {
-			e.printStackTrace();
+		    };
+			    
+		    stmt.close();
+		    rs.close();
+			
+		} else {
+			System.out.println("Failed to make connection!");
+			jdbcResponse	=	"Failed to make connection!";
+			throw new SQLException("Some error occured during database connection !");
 		}
 	}
 	
+	
+	private String getColumnAsJSON(ResultSet r, String colName) throws SQLException
+	{
+		return( "\t \"" + colName + "\":\"" + r.getString(colName) + "\"");
+	}
 	
 	public void closeConnection()
 	{

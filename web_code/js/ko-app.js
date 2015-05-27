@@ -15,7 +15,9 @@ var lineData = function(id, title, link, text)
 // LIST: contains indexes of the lines that have been edited in current session
 var	changedLinesList	=	[]
 
-self = null;
+self	= null;
+lastID	=	ko.observable(0);	/* this value is equivalent with not initialized */
+topID	=	null;
 
 var viewModel = function(lines)
 {
@@ -149,48 +151,67 @@ var viewModel = function(lines)
 
 //data = getDataUsingAjax();
 
-$.ajax({
-type: 'GET',
-dataType: "json",
-// dataType: 'text',
-url: "http://localhost:8080/nucsApp/articles",
-success: function(data){
-	
-	console.log(self.lines + "huh");
-	
-	self.lines.removeAll();
-	
-	for( article in data.articles )
-	{
-		self.lines.push(
-			new lineData(
-				data.articles[article].id,
-				data.articles[article].title,
-				data.articles[article].link,
-				data.articles[article].text
-				)
-			);	
+updateJsonData = function()
+{
+	$.ajax({
+	type: 'GET',
+	dataType: "json",
+	// dataType: 'text',
+	url: "http://localhost:8080/nucsApp/articles",
+	data:{start:lastID()},
+	success: function(data){
+		
+		console.log(self.lines + "huh");
+		
+		self.lines.removeAll();
+		
+		for( article in data.articles )
+		{
+			self.lines.push(
+				new lineData(
+					data.articles[article].id,
+					data.articles[article].title,
+					data.articles[article].link,
+					data.articles[article].text
+					)
+				);	
 			
-	}
-	
-	//ko.applyBindings( xx );
-	}
-});
+			lastID(data.current_page.art_id);
+			
+			/* first load of data */
+			if(topID == null){
+				topID =	lastID();
+			}
+		}
+		
+		//ko.applyBindings( xx );
+		}
+	});
+
+}
+
+moveLeft = function()
+{
+	lastID( 1 + Number(lastID()) );	// careful ! returns a string and applies "+" operator over string
+	updateJsonData();
+}
+
+moveRight = function()
+{
+	lastID( lastID()-1 );	// order not important, "-" operator does not make sense on strings
+	updateJsonData();
+}
 
 
-	// $.getJSON("http://localhost:8080/nucsApp/articles", function (data) {
-		// console.log("kek");
-	// });
-
-
-//viewModelInstance = ko.mapping.fromJS(data, viewModel)
-// console.log(data);
+// -----------------------
 
 // create instance of the viewModel; elements get added in reverse order
 viewModelInstance = viewModel([]);
 
 // apply the global bindings
 ko.applyBindings( viewModelInstance );
+
+updateJsonData();
 
 
 // jQuery ajax setup for the csrftoken handling

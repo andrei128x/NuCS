@@ -9,7 +9,7 @@ public class ItemElement {
 	
 	public String		title		=	"";
 	public String		link		=	"";
-	public String[]		category = new String[50];
+	public String[]		category = new String[128];
 	public String		author		=	"";
 	public String		pubDate		=	"";
 	public String		description	=	"";

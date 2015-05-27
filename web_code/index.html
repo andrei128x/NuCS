@@ -77,8 +77,8 @@
 					</div>
 
             <p>
-				<a class="btn btn-default" href="#" role="button" data-bind="click: null">&laquo; Newer</a>
-				<a class="btn btn-default" href="#" role="button" data-bind="click: null">Older &raquo;</a>
+				<input type="button" class="btn btn-default" role="button" data-bind="click: moveLeft, enable: (topID>lastID())" value="&laquo; Newer"/>
+				<input type="button" class="btn btn-default" role="button" data-bind="click: moveRight, enable: (lastID()>5)" value="Older &raquo;"/>
 			</p>
 
           </div>
