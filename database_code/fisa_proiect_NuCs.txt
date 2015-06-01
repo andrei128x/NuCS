@@ -1,6 +1,8 @@
 
 
 Despre plicatie ( aplicatia urmeaza cerintele principale ale problemei nr. 6 - News in Computer Science - Nucs, de la Tehnologii Web, site-ul domnului S. Buraga):
+	
+	- aplicatia este stocata pe GitHub la adresa: "https://github.com/andrei128x/NuCS"
 
 	-aplicatia ( per ansamblu ) are ca scop construirea unei pagini web, unde sint agregate informatii din 3 surse : TheHackerNews, Reddit si InfoQ, si stocate intr-o baza de date Oracle.
 	
