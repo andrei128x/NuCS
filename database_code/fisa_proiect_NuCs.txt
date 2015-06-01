@@ -1,6 +1,7 @@
 
 
-Despre plicatie:
+Despre plicatie ( aplicatia urmeaza cerintele principale ale problemei nr. 6 - News in Computer Science - Nucs, de la Tehnologii Web, site-ul domnului S. Buraga):
+
 	-aplicatia ( per ansamblu ) are ca scop construirea unei pagini web, unde sint agregate informatii din 3 surse : TheHackerNews, Reddit si InfoQ, si stocate intr-o baza de date Oracle.
 	
 	- aplicatia are urmatoarele parti:
@@ -20,6 +21,14 @@ Partea de server :
 	-	servlet-urile care fac diverse query-uri catre baza de date, iar rezultatele livrate sint formatate JSON si livrate mai departe catre aplicatia WEB
 		care le cere; servleturile urmeaza pattern-ul REST ( ex.: "http://localhost:8080/nucsApp/articles?start=4321" cere pagina care incepe de la indexul 4321, in timp ce : "http://localhost:8080/nucsApp/articles" returneaza cea mai noua pagina )
 		
+
+Organizare:
+
+	Folderul NuCS contine 3 sectiuni(foldere) principale:
+		
+		-	database_code	-	aplicatia pl/sql, impreuna cu functii, tabele, secvente, trigger(e) necesare stocatii informatiilor
+		-	server_code		-	aplicatia stand-alone + servlet-urile descrise mai sus (Java)
+		-	web_code		-	aplicatia WEB, cu ajax(knockout.js) + HTML + bootStrap ( responsiveness )
 		
 		
 1. [5pt]	-	insertia din alta sursa, folosind JUnit Testing, dar se capteaza/trateaza erorile - ofera si metrici de timp consumat	- DONE

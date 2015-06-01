@@ -1,0 +1,4 @@
+
+
+Detalii despre aplicatie si partea de SGBD Oracle, se gasesc in subfolderul(sectiunea) "database_code"
+
