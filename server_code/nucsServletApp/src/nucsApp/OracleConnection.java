@@ -1,5 +1,6 @@
 package nucsApp;
 import java.io.PrintWriter;
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -10,7 +11,12 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
+import nucsApp.ItemElement;
+import oracle.sql.ARRAY;
+import oracle.sql.ArrayDescriptor;
 
+
+@SuppressWarnings("deprecation")
 public class OracleConnection {
 
 	
@@ -154,6 +160,79 @@ public class OracleConnection {
 	}
 	
 	
+	/**
+	 * Proceseaza toate categoriile disponibile, SAU toate categoriile atasate unui articol
+	 * rezultatul functiei este scris in stream-ul PrintWriter, primit ca parametru
+	 * @param target
+	 * @param artID
+	 * @throws SQLException
+	 */
+	public void getCategories(PrintWriter target, String artID) throws SQLException
+	{
+		if (connection != null)
+		{
+			System.out.println("You made it, take control your database now!");
+			jdbcResponse		=	"You made it, take control your database now!";
+			
+			String		tmpID		= null;
+			boolean		firstRow	= true;
+			Statement	stmt		= connection.createStatement();
+
+			String	query;
+			
+			if(artID==null){
+				query	=	"select cat_name from nucs_view_categories";
+			}else{
+				query	=	"select cat_name from nucs_view_categories where art_id=" + artID;
+			}
+			
+			/* SQL query here */
+			ResultSet rs = stmt.executeQuery(query);
+		    
+		    while(rs.next())
+		    {
+		    	/* starting with SECOND RAW, start adding comma separator after previous raw */
+		    	if(!firstRow)
+		    	{
+		    		target.println(",\n");
+		    	}else{
+		    		firstRow = false;
+		    	}
+		    	
+		    	target.print("	{\n");
+		    	
+		    	tmpID	=	getColumnAsJSON(rs, "art_id");
+		    	
+		    	if(firstPageID == null){
+		    		firstPageID	=	tmpID;
+		    	}
+		    	
+		    	//int numColumns = rs.getMetaData().getColumnCount();
+		    	target.println(	tmpID + ",");
+		    	target.println(getColumnAsJSON(rs, "title")	+ ",");
+		    	target.println(getColumnAsJSON(rs, "link")	+ ",");
+		    	target.println(getColumnAsJSON(rs, "text") );
+		    	
+	            target.print("\t}");
+		    };
+			    
+		    stmt.close();
+		    rs.close();
+			
+		} else {
+			System.out.println("Failed to make connection!");
+			jdbcResponse	=	"Failed to make connection!";
+			throw new SQLException("Some error occured during database connection !");
+		}
+	}
+	
+	/**
+	 * Primeste un ResultSet si un nume de proprietate, si returneaza un rand intreg dintr-un JSON
+	 * @param r
+	 * @param colName
+	 * @return Rand formatat "cheie": "valoare"
+	 * @throws SQLException
+	 */
 	private String getColumnAsJSON(ResultSet r, String colName) throws SQLException
 	{
 		return( "\t \"" + colName + "\":\"" + r.getString(colName) + "\"");
@@ -168,4 +247,35 @@ public class OracleConnection {
 			e.printStackTrace();
 		}
 	}
+	
+	
+	public int addRssArticle(ItemElement article)
+	{
+
+		try {
+			String sql = "{call add_rss_data(?, ?, ?, ?, ?, ? )}";
+			CallableStatement stmt = connection.prepareCall(sql);
+			stmt.setString(1, article.title);
+			stmt.setString(2, article.link);
+			stmt.setString(3, article.author);
+			stmt.setString(4, article.pubDate);
+			stmt.setString(5, article.articleText);
+			
+			/* TODO: refactor to remove the 'deprecated' warning */
+			ArrayDescriptor descriptor = ArrayDescriptor.createDescriptor("NUCS_CATEG_LIST_TYPE",connection);
+			ARRAY arr_param = new ARRAY(descriptor, connection, article.category);
+			
+			stmt.setArray(6,  arr_param);
+
+			stmt.executeUpdate();
+			stmt.close();
+
+		} catch (SQLException e) {
+			System.out.println("SQL Exception raised !");
+			e.printStackTrace();
+		}
+		
+		return 0;
+	}
+	
 }

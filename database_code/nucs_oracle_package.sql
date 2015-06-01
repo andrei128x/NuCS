@@ -16,7 +16,7 @@ create table nucs_articles(
 		link	varchar2(512) not null,
 		autor	varchar2(128) null,
 		pubdate	date not null,
-		text	varchar2(2048)
+		text	varchar2(4000)
 	);
 /
 
@@ -28,7 +28,7 @@ create table nucs_categories(
 
 create table nucs_cat_list(
 	art_id	number,
-	cat_id	number
+	cat_id	number primary key
 );
 /
 
@@ -86,47 +86,76 @@ create or replace procedure add_rss_data(
 		v_text	in	nucs_articles.text%type,
     v_cat_list	in nucs_categ_list_type
 	) is
-
+  
+  
+  tz  timestamp;
 	v_next_art_index number;
+  v_insert_pubdate date;
 
 begin
 
 	v_next_art_index := nucs_get_index;
 	
+	savepoint start_tran;
+  
 	nucs_sync_categories(v_next_art_index, v_cat_list);
 	
+  if(v_pubdate != '')
+    then
+      tz := to_timestamp_tz(v_pubdate,'Day, dd mon yyyy hh24:mi:ss TZHTZM');
+      v_insert_pubdate := cast(tz as date);
+      --v_insert_pubdate := sysdate;
+      dbms_output.put_line(v_insert_pubdate);
+    else
+      v_insert_pubdate := sysdate;
+    end if;  
+  
 	insert into nucs_articles values(
 			v_next_art_index,
 			v_title,
 			v_link,
 			v_autor,
-			sysdate,
+			v_insert_pubdate,
 			v_text
 		);
-		
+
 	commit;
-	
+		
+	exception
+		when others then
+			rollback to start_tran;
+			raise;
+
 end;
 /
 
 
-create trigger nucs_trig_suspicios_log
+create or replace trigger nucs_trig_suspicios_log
 	after insert or update of title on nucs_articles
-      when(old.title like '%hack' )
+	for each row
+      when(lower(new.title) like '%google%' or lower(new.title) like '%hack%' )
 begin
 	insert into nucs_security_logs values( :new.art_id, sysdate );
 end;
 /
 
+
+-- toate categoriile, impreuna cu articolele de care apartin
 create or replace view nucs_view_categories
 as
-	select cat_name from nucs_categories; 
+	select na.art_id, nc.cat_name from nucs_articles na
+	inner join nucs_cat_list ncl on ncl.art_id = na.art_id
+	inner join nucs_categories nc on ncl.cat_id = nc.cat_id; 
 /
 
 create or replace view nucs_view_logs
 as
 	select art_id from nucs_security_logs;
 /
+
+
+
+create index nucs_cat_list_idx on nucs_cat_list(art_id,cat_id);
 
 commit
 /

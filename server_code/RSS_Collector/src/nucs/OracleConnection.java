@@ -8,6 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Types;
 
+import nucs.ItemElement;
 import oracle.sql.ARRAY;
 import oracle.sql.ArrayDescriptor;
 
@@ -52,40 +53,25 @@ public class OracleConnection {
 	{
 
 		try {
-			String sql = "{call add_rss_data(?, ?, ?, ?, sysdate, ? )}";
+			String sql = "{call add_rss_data(?, ?, ?, ?, ?, ? )}";
 			CallableStatement stmt = connection.prepareCall(sql);
 			stmt.setString(1, article.title);
 			stmt.setString(2, article.link);
+			stmt.setString(3, article.author);
+			stmt.setString(4, article.pubDate);
+			stmt.setString(5, article.articleText);
 			
-			String[] abc = {"123a","456b","789c"};
+//			String[] abc = {"123a","456b","789c"};
 			
 			/* TODO: refactor to remove the 'deprecated' warning */
 			ArrayDescriptor descriptor = ArrayDescriptor.createDescriptor("NUCS_CATEG_LIST_TYPE",connection);
 			ARRAY arr_param = new ARRAY(descriptor, connection, article.category);
 			
-			
-			stmt.setArray(3,  arr_param);
-			
-			stmt.setString(4, article.author);
-			stmt.setString(5, article.description);
-			
-			for(int k=0; k<article.category.length; k++)
-			{
-				System.out.print(article.category[k] + " | ");
-			}
-			//System.out.println(" *** ");
-			
+			stmt.setArray(6,  arr_param);
+
 			stmt.executeUpdate();
-//		    
-//		    while(rs.next())
-//		    {
-//		    	int numColumns = rs.getMetaData().getColumnCount();
-//	            for ( int i = 1 ; i <= numColumns ; i++ )
-//	            {
-//	            	System.out.println(rs.getString(i));
-//	            }
-//		    }
-		    
+			stmt.close();
+
 		} catch (SQLException e) {
 			System.out.println("SQL Exception raised !");
 			e.printStackTrace();

@@ -20,9 +20,9 @@
   <title>STUB Index file using Bootstrap</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="./css/bootstrap.min.css" rel="stylesheet">
     <!-- Bootstrap theme -->
-    <link href="http://getbootstrap.com/dist/css/bootstrap-theme.min.css" rel="stylesheet">
+    <link href="./css/bootstrap-theme.min.css" rel="stylesheet">
     
     <!-- local CSS definitions -->
     <link href="./css/local.css" rel="stylesheet">
@@ -55,9 +55,9 @@
 		<nav class="blog-nav">
 		  <a class="blog-nav-item" href="#" data-bind="css: {active:1}">Latest Articles</a>
 		  <a class="blog-nav-item" href="#">Categories</a>
-		  <a class="blog-nav-item" href="#">Press</a>
+		  <!--<a class="blog-nav-item" href="#">Press</a>
 		  <a class="blog-nav-item" href="#">New hires</a>
-		  <a class="blog-nav-item" href="#">About</a>
+		  <a class="blog-nav-item" href="#">About</a>-->
 		</nav>
 		</div>
 		</div>
@@ -73,6 +73,7 @@
 							<div class="panel-heading"  data-bind="html: art_title">Title
 							</div>
 							<div class="panel-body" data-bind="html: art_text"> Etiam porta <em>sem malesuada magna</em> mfdsfs </div>
+							<a style="font-size:x-small;background-color:#ddd" data-bind="text: art_link, attr:{title:art_title, href: art_link}">Link !</a>
 						</div>
 					</div>
 
@@ -139,15 +140,13 @@
 		<hr>
 
 		<footer>
-		<p>&copy; lasting note / 2014</p>
+		<p>&copy; Andrei Chelaru / 2015</p>
 		</footer>
 	
 		<form action="">
 		  <input id="m" autocomplete="off" /><button>Send</button>
 		</form>
 
-		<a href="http://themeforest.net/item/webarch-responsive-admin-dashboard-template/full_screen_preview/6157416">clickme!</a>
-        
 	</div>
     
     <!-- Latest compiled and minified JavaScript -->

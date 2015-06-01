@@ -1,0 +1,50 @@
+
+
+Despre plicatie:
+	-aplicatia ( per ansamblu ) are ca scop construirea unei pagini web, unde sint agregate informatii din 3 surse : TheHackerNews, Reddit si InfoQ, si stocate intr-o baza de date Oracle.
+	
+	- aplicatia are urmatoarele parti:
+	
+		- baza de date oracle, constand in tabele, functii, triggere, view-uri, etc, necesare stocarii informatiilor "culese"
+		
+		- partea de server, ce achizitioneaza, parseaza, stocheaza(prin jdbc) si livreaza(catre front-end) date "culese" ( aplicatie stand-alone + java servlets )
+		
+		- partea de front-end ( ce manipuleaza continutul generat de servleturi ) si care afiseaza informatiile
+	
+	
+Partea de server :
+
+	-	aplicatia stand-alone ( rulata periodic, printr-un CRON-job ) se conecteaza la cele 3 surse, parseaza datele din format RSS in Oracle-friendly,
+		apoi le insereaza in baza de date prin intermediul functiilor si procedurilor PL/SQL.
+		
+	-	servlet-urile care fac diverse query-uri catre baza de date, iar rezultatele livrate sint formatate JSON si livrate mai departe catre aplicatia WEB
+		care le cere; servleturile urmeaza pattern-ul REST ( ex.: "http://localhost:8080/nucsApp/articles?start=4321" cere pagina care incepe de la indexul 4321, in timp ce : "http://localhost:8080/nucsApp/articles" returneaza cea mai noua pagina )
+		
+		
+		
+1. [5pt]	-	insertia din alta sursa, folosind JUnit Testing, dar se capteaza/trateaza erorile - ofera si metrici de timp consumat	- DONE
+
+
+2. [5pt]	- 	preluare din formular	-	functia de insertie - "add_rss_data"	-	DONE
+
+3.	[5pt]	-	tranzactii simultane - operatiile sint intr-un singur querry; de asemeni, tranzactie atomica, in functia "add_rss_data" se efectueaza un savepoint
+			-	DONE
+
+
+4.	[5pt]	-	paginare -	DONE  ( obs: nu se face join, este query pe o singura tabela )
+
+5.	[2pt]	-	trigger-ul implementeaza urmatoarea problema:
+	"in momentul inserarii unor articole "suspicioase", ce contin 'hack' sau 'google', id-ul si data inserari vor fi log-ate intr-o tabela de securitate"
+
+			-	trigger pentru problema descrisa mai sus: "nucs_trig_suspicios_log" - DONE
+
+			
+6.	[4pt]	-	100% - functii, proceduri	: inserare articol, inserare si creare legaturi cu categoriile articolelor, functie de returnare index nou din secventa
+
+7.	[2pt]	-	75%	-	1 table of varchar si 2 view-uri ( tabela varchar cu care transmit date din Java JDBC catre functia de pl/sql si view-uri care fac 
+			join peste tabelele de articole, categorii, etc.
+			
+			a fost creat index peste tabela de legatura intre articole si categorii peste perechea (art_id, cat_id)
+
+8.	[2pt]	-	100% - 	toate exceptiile sint prinse/tratate in Java JDBC ( este tratat cazul in care esueaza insertia unui articol, si trebuie facut roll-back
+			la un savepoint cunoscut

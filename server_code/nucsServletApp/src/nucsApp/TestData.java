@@ -1,7 +1,6 @@
 package nucsApp;
 import java.io.IOException;
 import java.io.PrintWriter;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -11,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
  * Servlet implementation class MainApp
  */
 
-public class AddData extends HttpServlet {
+public class TestData extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -25,22 +24,6 @@ public class AddData extends HttpServlet {
         PrintWriter writer = response.getWriter();
         
 //        Enumeration<String> e = request.getHeaderNames();
-        
-        System.out.println(">>> : " + request.getQueryString());
-//		System.out.println(">>> : " + request.getParameter("start"));
-		
-        ItemElement	elem	=	new ItemElement();
-        
-		if(	(request.getParameter("art_title")!=null) &&
-			(request.getParameter("art_link")!=null) &&
-			(request.getParameter("art_text")!=null) )
-		{
-			elem.title		= request.getParameter("art_title");
-			elem.link		= request.getParameter("art_link");
-			elem.articleText = request.getParameter("art_text");
-			
-		}
-        
         
         writer.println("<html>");
         writer.println("<head>");

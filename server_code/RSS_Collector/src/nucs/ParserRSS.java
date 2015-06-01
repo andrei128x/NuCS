@@ -9,6 +9,8 @@ import java.util.List;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
+import nucs.ItemElement;
+
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -54,10 +56,12 @@ public class ParserRSS extends DefaultHandler {
 	 */
 	private void addData(String data)
 	{
-//		if("description".equals(currentProperty))
+//		if("pubDate".equals(currentProperty))
 //		{
-//			System.out.println(data);
+////			System.out.print(currentItem.title);
 //		}
+//		System.out.println(currentProperty + " ->>>> " + data);
+		
 		
 		/* Populate the ItemElement object with the corresponding information */
 		switch(currentProperty)
@@ -68,7 +72,7 @@ public class ParserRSS extends DefaultHandler {
 		case("category"):
 			
 			String str_lst = StringEscapeUtils.escapeXml11(data);
-				if(data!="")
+				if(!data.equals(""))
 				{
 					currentItem.category[currentItem.cat_count]	= str_lst;
 					currentItem.cat_count++;
@@ -79,8 +83,11 @@ public class ParserRSS extends DefaultHandler {
 		case("author"):
 		case("dc:creator"):		currentItem.author			+=	StringEscapeUtils.escapeXml11(data);break;
 		
-		case("pubDate"):		currentItem.pubDate			+=	StringEscapeUtils.escapeXml11(data);break;
-		case("description"):	currentItem.description		+=	StringEscapeUtils.escapeXml11(data);break;
+		case("pubDate"):		currentItem.pubDate			+=	fixDateString(StringEscapeUtils.escapeXml11(data));break;
+		case("description"):
+			{
+				currentItem.articleText		+=	StringEscapeUtils.escapeXml11(data);break;
+			}
 		}
 	}
 	
@@ -110,6 +117,7 @@ public class ParserRSS extends DefaultHandler {
 		if( "item".equals(qName) )
 		{
 			insideItem	=	false;
+			currentItem.articleText	=	currentItem.articleText.replaceAll("&lt;.*?&gt;", "xxx");
 			items.add(currentItem);
         }
 	}
@@ -122,11 +130,36 @@ public class ParserRSS extends DefaultHandler {
 	{
 		String data = new String(ch, start, length).trim().replace("\r", "").replace("\n", "");
 		
-		if(insideItem)
+		if( (insideItem) && (!data.equals("")) )
 		{
+			//System.out.println( "-- data : " + data + " :: " + data.length() );
 			addData(data);
-			//System.out.println("-- data : " + data);
 		}
 	}
 	
+	/**
+	 * function that fixes timestamp data format for pl/sql parsing
+	 * @param rawDate
+	 * @return
+	 */
+	private String fixDateString(String rawDate)
+	{
+		String ret;
+		ret	= rawDate.replaceFirst("Mon", "Monday");
+		ret	= ret.replaceFirst("Tue", "Thuesday");
+		ret	= ret.replaceFirst("Wed", "Wednesday");
+		ret	= ret.replaceFirst("Thu", "Thursday");
+		ret	= ret.replaceFirst("Fri", "Friday");
+		ret	= ret.replaceFirst("Sat", "Saturday");
+		ret	= ret.replaceFirst("Sun", "Sunday");
+		
+		if(ret=="")
+		{
+			ret = "sysdate";
+		}
+		
+		//System.out.println(">>" + ret + "<<" + " ---- " + currentItem.title);
+		
+		return ret;
+	}
 }

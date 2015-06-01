@@ -1,7 +1,4 @@
-package nucs;
-
-import java.util.ArrayList;
-import java.util.List;
+package nucsApp;
 
 public class ItemElement {
 
