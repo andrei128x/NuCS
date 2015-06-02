@@ -38,9 +38,15 @@
 		
 		
 	
-		Spent resources ( approx.):
-		-	20 hours - RSS Collector
-		-	10 hours - tomcat + demo servlet + first DB connection from servlet
-		-	8 hours	- Oracle SQL + RSS Collector code : INSERT capability + nucs_articles tables
+		Spent resources ( approx. , continuare ):
+		-	20 ore - RSS Collector
+		-	10 ore - tomcat + demo servlet + first DB connection from servlet
+		-	8 ore	- Oracle SQL + RSS Collector code : INSERT capability + nucs_articles tables
 		
-		-	6 hours - troubleshooting Tomcat+Oracle connection on the local laptop, after email response.
+		-	6 ore - troubleshooting Tomcat+Oracle connection on the local laptop, after email response.
+		-	~15 ore PL/SQL application
+		-	~10 ore Java servlets+collector ( REST API servlets )
+		-	15 ore	HTML front-end + Knockout.js dynamic DOM manipulation
+		
+		
+		Total(ne-final): ~164 ore
