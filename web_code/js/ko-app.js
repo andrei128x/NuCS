@@ -33,16 +33,22 @@ topID	=	null;
 
 var viewModel = function()
 {
+	
+	// console.log( "cookie: " + (isCookieSet == "andrei") );
 	// save the current instance reference of the ViewModel; "this" is local-consistent, not global-consistent
 	self = this;
 
 	// index of the last object added; start at "1"
 	// self.index		= lines.length + 1;
-	self.index		=	0;
+	//self.index		=	0;
+	self.act_index	=	ko.observable(0);
 	
+	self.cookieUser	=	ko.observable(readCookie("user"));
 	self.login_user	=	ko.observable("andrei chelaru");
 	self.login_pass	=	ko.observable("");
-	self.logged_in	=	ko.observable(document.cookie["user"] != null);
+	
+	
+	self.logged_in	=	ko.observable( self.cookieUser() != null);
 	
 	// INIT: binding for the "lines" iterator
 	self.lines		= 	ko.observableArray([]);
@@ -299,7 +305,32 @@ doLogin = function()
 
 }
 
+doLogout = function()
+{
 
+	console.log("logging out ..." );
+	
+	$.ajax({
+	type: 'GET',
+	dataType: "json",
+	// dataType: 'text',
+	url: "http://localhost:8080/nucsApp/logout",
+	data:{},
+	success: function(data){
+		//logged	=	(data["logged_in"] === 'true');
+		self.logged_in( false );
+		self.act_index(0);
+		console.log( self.logged_in());
+		}
+	
+	});
+
+}
+
+setActive = function(index){
+	self.act_index(index);
+	console.log(index);
+}
 
 // -----------------------
 
@@ -329,3 +360,13 @@ $.ajaxSetup({
     }
 });
 
+function readCookie(name) {
+    var nameEQ = name + "=";
+    var ca = document.cookie.split(';');
+    for(var i=0;i < ca.length;i++) {
+        var c = ca[i];
+        while (c.charAt(0)==' ') c = c.substring(1,c.length);
+        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+    }
+    return null;
+}

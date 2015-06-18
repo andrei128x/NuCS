@@ -32,19 +32,27 @@
     <url-pattern>/articles</url-pattern>
   </servlet-mapping>
   <servlet>
-  	<servlet-name>serv_login</servlet-name>
-  	<servlet-class>nucsApp.LogIn</servlet-class>
+    <servlet-name>serv_login</servlet-name>
+    <servlet-class>nucsApp.LogIn</servlet-class>
   </servlet>
   <servlet-mapping>
-  	<servlet-name>serv_login</servlet-name>
-  	<url-pattern>/login</url-pattern>
+    <servlet-name>serv_login</servlet-name>
+    <url-pattern>/login</url-pattern>
   </servlet-mapping>
   <servlet>
-  	<servlet-name>test_jsp</servlet-name>
-  	<jsp-file>/html_files/index.html</jsp-file>
+    <servlet-name>test_jsp</servlet-name>
+    <servlet-class>nucsApp.getStatic</servlet-class>
   </servlet>
   <servlet-mapping>
-  	<servlet-name>test_jsp</servlet-name>
-  	<url-pattern>/default</url-pattern>
+    <servlet-name>test_jsp</servlet-name>
+    <url-pattern>/*</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>serv_logout</servlet-name>
+    <servlet-class>nucsApp.LogOut</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>serv_logout</servlet-name>
+    <url-pattern>/logout</url-pattern>
   </servlet-mapping>
 </web-app>
