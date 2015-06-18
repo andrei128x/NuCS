@@ -2,3 +2,8 @@
 
 Detalii despre aplicatie si partea de SGBD Oracle, se gasesc in subfolderul(sectiunea) "database_code"
 
+Arhiva .zip NU poate fi upload-ata ca si proiect.zip, se genereaza o eroare:
+
+	"Eroare ! arhiva trebuie sa aiba numele de forma Nume_Prenume_Grupa_nrTema.zip si sa contina un director identic"
+	
+asadar, fisierul este redenumit corespunzator

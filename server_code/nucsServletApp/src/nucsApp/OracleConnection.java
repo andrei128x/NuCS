@@ -2,6 +2,7 @@ package nucsApp;
 import java.io.PrintWriter;
 import java.sql.CallableStatement;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -10,6 +11,10 @@ import javax.sql.DataSource;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
+
+import org.apache.commons.lang3.StringEscapeUtils;
+
+import com.sun.org.apache.xml.internal.security.utils.Base64;
 
 import nucsApp.ItemElement;
 import oracle.sql.ARRAY;
@@ -101,6 +106,59 @@ public class OracleConnection {
 			e.printStackTrace();
 		}
 	}
+
+	public boolean getLogin(PrintWriter target, String user, String pass) throws SQLException
+	{
+		boolean logOK = false;
+		
+		if (connection != null)
+		{
+			System.out.println("You made it, take control your database now!");
+			jdbcResponse		=	"You made it, take control your database now!";
+			//user = StringEscapeUtils.escapeXml11(user);
+			//pass = StringEscapeUtils.escapeXml11(pass);
+			
+			/* TODO implement encrypt function */
+			pass = dummyEncrypt(pass).toString();
+			
+			try {
+				String sql = "select * from nucs_users where user_name=? and user_pass=?";
+				PreparedStatement stmt = connection.prepareStatement(sql);
+				
+				
+				stmt.setString(1, user);
+				stmt.setString(2, pass);
+
+				ResultSet rs = stmt.executeQuery();
+				
+				
+				
+				while(rs.next())
+				{
+					logOK	=	true;
+					target.println("{\n\t\"logged_in\": \"true\",");
+
+					//System.out.print("numar rinduri" + rs.getString(1));
+					
+					target.println(getColumnAsJSON(rs, "user_name")	+ "," );
+					target.println(getColumnAsJSON(rs, "user_desc") );
+				}
+
+				if(!logOK)
+				{
+					target.print("{\n \"logged_in\": \"false\"");
+				}
+				
+				stmt.close();
+				
+			} catch (SQLException e) {
+				System.out.println("SQL Exception raised !");
+				e.printStackTrace();
+			}
+		}
+		
+		return logOK;
+	}
 	
 	
 	public void getArticles(PrintWriter target, int start, int page) throws SQLException
@@ -180,10 +238,12 @@ public class OracleConnection {
 
 			String	query;
 			
-			if(artID==null){
-				query	=	"select cat_name from nucs_view_categories";
+			if(artID.equals("")){
+				query	=	"select unique cat_name from nucs_view_categories";
+				System.out.println("no param requested");
 			}else{
-				query	=	"select cat_name from nucs_view_categories where art_id=" + artID;
+				query	=	"select unique cat_name from nucs_view_categories where art_id=" + artID;
+				System.out.println("param requested: "+query);
 			}
 			
 			/* SQL query here */
@@ -201,17 +261,16 @@ public class OracleConnection {
 		    	
 		    	target.print("	{\n");
 		    	
-		    	tmpID	=	getColumnAsJSON(rs, "art_id");
+//		    	tmpID	=	getColumnAsJSON(rs, "art_id");
+		    	target.println(getColumnAsJSON(rs, "cat_name") );
 		    	
 		    	if(firstPageID == null){
 		    		firstPageID	=	tmpID;
 		    	}
 		    	
 		    	//int numColumns = rs.getMetaData().getColumnCount();
-		    	target.println(	tmpID + ",");
-		    	target.println(getColumnAsJSON(rs, "title")	+ ",");
-		    	target.println(getColumnAsJSON(rs, "link")	+ ",");
-		    	target.println(getColumnAsJSON(rs, "text") );
+//		    	target.println(	tmpID + ",");
+//		    	target.println(getColumnAsJSON(rs, "cat_name") );
 		    	
 	            target.print("\t}");
 		    };
@@ -276,6 +335,17 @@ public class OracleConnection {
 		}
 		
 		return 0;
+	}
+
+	
+	String dummyEncrypt(String data)
+	{
+		String ret	=	"";
+		
+		ret	=	Base64.encode(data.getBytes());
+		System.out.println(data + " : " + ret);
+		
+		return ret;
 	}
 	
 }

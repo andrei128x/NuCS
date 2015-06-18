@@ -35,7 +35,8 @@ create table nucs_cat_list(
 create table nucs_users(
 	user_id		number primary key,
 	user_name	varchar(32),
-	pass		varchar(32) not null
+	user_pass	varchar(32) not null,
+  user_desc varchar(128)
 );
 /
 
@@ -143,7 +144,7 @@ end;
 -- toate categoriile, impreuna cu articolele de care apartin
 create or replace view nucs_view_categories
 as
-	select na.art_id, nc.cat_name from nucs_articles na
+	select ncl.art_id, nc.cat_name from nucs_articles na
 	inner join nucs_cat_list ncl on ncl.art_id = na.art_id
 	inner join nucs_categories nc on ncl.cat_id = nc.cat_id; 
 /
@@ -156,6 +157,10 @@ as
 
 
 create index nucs_cat_list_idx on nucs_cat_list(art_id,cat_id);
+
+-- dummy inserts for users
+insert into nucs_users values( 10000, 'andrei', 'cGFyb2xh');
+
 
 commit
 /

@@ -117,7 +117,7 @@ public class ParserRSS extends DefaultHandler {
 		if( "item".equals(qName) )
 		{
 			insideItem	=	false;
-			currentItem.articleText	=	currentItem.articleText.replaceAll("&lt;.*?&gt;", "xxx");
+			currentItem.articleText	=	currentItem.articleText.replaceAll("&lt;.*?&gt;", "");
 			items.add(currentItem);
         }
 	}
